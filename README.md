@@ -1,2 +1,21 @@
-# Password-Strength-Analyser
-This is a first-year college project that implements a Password Strength Analyzer, developed primarily using Python. The project features a simple and user-friendly web interface built with HTML, CSS, and JavaScript, which evaluates passwords based on basic security rules and displays their strength to the user.
+# 🔐 Password Strength Analyzer
+
+A modern password strength checker built with Flask and vanilla JavaScript.
+It analyzes password rules, estimates crack time using entropy, and generates secure passwords.
+
+## 🚀 Features
+- Real-time password strength analysis
+- Entropy-based crack time estimation
+- Dark / Light mode toggle
+- Secure random password generator
+- Clean modern UI
+
+## 🛠 Tech Stack
+- Flask (Python)
+- HTML, CSS, JavaScript
+- Regex + entropy math
+
+## ▶ How to Run
+```bash
+pip install -r requirements.txt
+python app.py
