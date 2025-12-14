@@ -17,66 +17,89 @@ const conditions = {
   special: document.getElementById("special"),
 };
 
-// THEME PERSISTENCE
+/* ---------------- THEME PERSISTENCE ---------------- */
 if (localStorage.getItem("theme") === "light") {
   document.body.classList.add("light");
   themeToggle.innerText = "☀️";
 }
 
 themeToggle.addEventListener("click", () => {
-  const light = document.body.classList.toggle("light");
-  themeToggle.innerText = light ? "☀️" : "🌙";
-  localStorage.setItem("theme", light ? "light" : "dark");
+  const isLight = document.body.classList.toggle("light");
+  themeToggle.innerText = isLight ? "☀️" : "🌙";
+  localStorage.setItem("theme", isLight ? "light" : "dark");
 });
 
-// PASSWORD CHECK
+/* ---------------- RESET UI FUNCTION ---------------- */
+function resetUI() {
+  strengthFill.style.width = "0%";
+  strengthFill.style.background = "transparent";
+  strengthText.innerText = "";
+  crackTime.innerText = "⏳ Estimated crack time: --";
+
+  Object.values(conditions).forEach(li => {
+    li.classList.remove("valid");
+    li.querySelector(".icon").innerText = "❌";
+  });
+}
+
+/* ---------------- PASSWORD CHECK ---------------- */
 passwordInput.addEventListener("input", async () => {
   const password = passwordInput.value;
 
-  if (!password) return;
+  // ✅ FIX: clear UI when input is empty
+  if (password.length === 0) {
+    resetUI();
+    return;
+  }
 
-  const res = await fetch("/check", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password }),
-  });
+  try {
+    const res = await fetch("/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
 
-  const data = await res.json();
-  let score = 0;
+    const data = await res.json();
+    let score = 0;
 
-  Object.keys(data.rules).forEach(key => {
-    const li = conditions[key];
-    const icon = li.querySelector(".icon");
+    Object.keys(data.rules).forEach(key => {
+      const li = conditions[key];
+      const icon = li.querySelector(".icon");
 
-    if (data.rules[key]) {
-      li.classList.add("valid");
-      icon.innerText = "✅";
-      score++;
-    } else {
-      li.classList.remove("valid");
-      icon.innerText = "❌";
-    }
-  });
+      if (data.rules[key]) {
+        li.classList.add("valid");
+        icon.innerText = "✅";
+        score++;
+      } else {
+        li.classList.remove("valid");
+        icon.innerText = "❌";
+      }
+    });
 
-  strengthFill.style.width = `${score * 20}%`;
-  strengthFill.style.background =
-    score <= 2 ? "#ff6b6b" :
-    score === 3 ? "#f1c40f" :
-    "#2ecc71";
+    strengthFill.style.width = `${score * 20}%`;
+    strengthFill.style.background =
+      score <= 2 ? "#ff6b6b" :
+      score === 3 ? "#f1c40f" :
+      "#2ecc71";
 
-  strengthText.innerText = [
-    "Very Weak",
-    "Weak",
-    "Okay",
-    "Strong",
-    "Very Strong",
-    "Unbreakable",
-  ][score];
+    const labels = [
+      "Very Weak 💀",
+      "Weak 😬",
+      "Okay 😐",
+      "Strong 💪",
+      "Very Strong 😎",
+      "Unbreakable 🧠",
+    ];
 
-  crackTime.innerText = "⏳ Estimated crack time: " + data.crack_time;
+    strengthText.innerText = labels[score];
+    crackTime.innerText = "⏳ Estimated crack time: " + data.crack_time;
+
+  } catch (err) {
+    strengthText.innerText = "Server error";
+  }
 });
 
-// GENERATE PASSWORD
+/* ---------------- GENERATE PASSWORD ---------------- */
 generateBtn.addEventListener("click", async () => {
   const res = await fetch("/generate");
   const data = await res.json();
@@ -86,7 +109,7 @@ generateBtn.addEventListener("click", async () => {
   passwordInput.dispatchEvent(new Event("input"));
 });
 
-// COPY TO CLIPBOARD
+/* ---------------- COPY TO CLIPBOARD ---------------- */
 copyBtn.addEventListener("click", () => {
   if (!generatedPassword.value) return;
 
