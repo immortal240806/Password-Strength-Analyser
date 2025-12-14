@@ -1,21 +1,21 @@
-# 🔐 Password Strength Analyzer
+PASSWORD STRENGTH ANALYZER
 
-A modern password strength checker built with Flask and vanilla JavaScript.
-It analyzes password rules, estimates crack time using entropy, and generates secure passwords.
+This project is a web-based Password Strength Analyzer and Secure Password Generator developed using Python (Flask), HTML, CSS, and JavaScript. The application helps users evaluate password strength in real time, understand password security rules, and generate strong passwords.
 
-## 🚀 Features
-- Real-time password strength analysis
-- Entropy-based crack time estimation
-- Dark / Light mode toggle
-- Secure random password generator
-- Clean modern UI
+The system analyzes passwords based on essential security rules such as minimum length, use of uppercase and lowercase letters, numbers, and special characters. It also estimates how long a password would take to crack using entropy-based calculations, providing more realistic feedback than simple rule-based systems.
 
-## 🛠 Tech Stack
-- Flask (Python)
-- HTML, CSS, JavaScript
-- Regex + entropy math
+The backend is implemented using object-oriented programming concepts. A PasswordAnalyzer class is responsible for rule validation, entropy calculation, and crack-time estimation, while a PasswordGenerator class securely generates random passwords using Python’s secrets module. Functional programming concepts such as lambda functions and reduce are used along with data structures like dictionaries and lists to organize and process rules efficiently.
 
-## ▶ How to Run
-```bash
-pip install -r requirements.txt
-python app.py
+The frontend provides real-time visual feedback as the user types. Password rules dynamically change from red cross marks to green tick marks when satisfied. A strength bar and crack-time display update instantly. Additional features include a strong password generator, copy-to-clipboard functionality, toast notifications, and dark/light mode with theme persistence.
+
+The project does not store or log passwords and is intended for educational purposes only. Crack-time estimation is theoretical and demonstrates security concepts rather than real-world attack guarantees.
+
+How to Run
+
+Install dependencies using pip install -r requirements.txt
+
+Run the application using python app.py
+
+Open a browser and visit http://127.0.0.1:5000/
+
+This project demonstrates the practical application of object-oriented programming, functional programming, data structures, and modern UI/UX principles in building a secure and user-friendly web application.
